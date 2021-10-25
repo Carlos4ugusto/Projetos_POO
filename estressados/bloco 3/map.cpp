@@ -48,8 +48,8 @@ int mais_ocorrencias(vector<int> v){
 }
 
 int main(){
-    std::cout << sozinhos({1, 3, 4, 3, -1, -2, -2}) << "\n";
-    std::cout << mais_ocorrencias({1, 3, 4, 3, -1, -2, -2}) << "\n";
+    cout << sozinhos({1, 3, 4, 3, -1, -2, -2}) << "\n";
+    cout << mais_ocorrencias({1, 3, 4, 3, -1, -2, -2}) << "\n";
 
     return 0;
 }
