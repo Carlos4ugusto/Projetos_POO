@@ -26,7 +26,7 @@ struct Motoca {
         void inserirPessoa  (Pessoa pessoa) {
             this->pessoa = pessoa;
         }
-    }
+    };
     
 
     int main() {
