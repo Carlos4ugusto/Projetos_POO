@@ -12,7 +12,7 @@ class Pessoa{
     int idade;
     //definição de métodos
     public:
-    Pessoa( int _id, sting _nome, int _idade);
+    Pessoa( int _id, string _nome, int _idade);
 
     void setId( int _id );
     int getId();
@@ -20,16 +20,16 @@ class Pessoa{
     void setNome( string _nome );
     string getnome;
 
-    void setIdade( ind _idade );
+    void setIdade( int _idade );
     int getIdade;
 };
     //construtor
-    Pessoa::Pessoa( int _id, sting _nome, int _idade){
+    Pessoa::Pessoa( int _id, string _nome, int _idade){
         id = _id;
         nome = _nome;
         idade = _idade;
     }
-    void Pessoa::setiId( int _id ){
+    void Pessoa::setId( int _id ){
         id = _id;
     }
     int Pessoa::getId(){
