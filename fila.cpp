@@ -6,12 +6,12 @@ using namespace std;
 int main(){
     queue<string> cartas;
 
-    cartas.push("k");
+    cartas.push("k");//insere na fila
     cartas.push("q");
     cartas.push("j");
     cartas.push("a");
 
-    cout << "tamanho da fila" << cartas.size() << endl;
+    cout << "tamanho da fila" << cartas.size() << endl;//
     cout << "primeira carta: " << cartas.front() << endl;
     cout << "ultima carta: " << cartas.back() << endl;
     

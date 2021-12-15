@@ -1,23 +1,27 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <sstream>//biblioteca para conversao de string para int
 #include <list>
 
 using namespace std;
 
 class KID {
     public:
-        KID(std::string nome, int idade) {
+    
+        KID(string nome, int idade) {
             this->nome = nome;
             this->idade = idade;
         }
+        string toString() {//retorna o nome e a idade
+            return nome + " " + to_string(idade);//converte para string
+        }
         string getNome() {
-            return nome;
+            return this->nome;
         }
-        int getIdade() {
-            return this->idade;
+        int getIdade() {//retorna a idade 
+            return idade;
         }
-        void setnome(string nome) {
+        void setnome(string nome) {//altera o nome
             this->nome = nome;
         }
         void setIdade(int idade) {
@@ -32,49 +36,88 @@ class KID {
         int idade;
 
 };
-class pula_pula:
-    
-    public KID {
-    public:
-        pula_pula(vector<int> kids_waiting, vector<int> kids_playing){
-            list<int> kids_waiting;
-            list<int> kids_playing;
-            int tam;
-            int tam2;
-            tam = kids_waiting.size();
-            for(int i = 0; i < tam; i++) {
-                kids_waiting.push_back(kids_waiting[i]);
-            }
-            tam2 = kids_playing.size();
-            for(int i = 0; i < tam2; i++) {
-                kids_playing.push_back(kids_playing[i]);
-            }
-
-        void add_kid(int idade){
-            kids_waiting.push_back(idade);
-        }
-        void remove_kid(int idade) {
-            kids_waiting.remove(idade);
-        }
-        void add_kid_playing(int idade) {
-            kids_playing.push_back(idade);
-        }
-        void remove_kid_playing(int idade) {
-            kids_playing.remove(idade);
-        }
-        void imprime() {
-            std::cout << "kids_waiting: " << kids_waiting << std::endl;
-            std::cout << "kids_playing: " << kids_playing << std::endl;
-        }
+class pula_pula {
     private:
-        list<int> kids_waiting;
-        list<int> kids_playing;
-};
+        list<KID> kids_waiting;
+        list<KID> kids_playing;
+        int max_kids;
+    
+    public: 
+        void init(int max_kids) {//inicializa a lista de crianças
+            this->max_kids = max_kids;//maximo de crianças
+        }
+    string toString() {//retorna a lista de crianças
+        string linha = "=> ";
+        list<KID>::reverse_iterator rit = kids_waiting.rbegin();
+        for (int i = 0; i < kids_waiting.size(); i++) {
+            linha += rit->toString() + " ";//concatena os nomes e idades
+            rit++;
+            linha += "=> [ ";
+        }
+        return linha;
+        list<KID>::reverse_iterator rt = kids_playing.rbegin();
+        for (int i = 0; i < kids_playing.size(); i++) {
+            linha += rt->toString() + " ";//concatena os nomes
+            rt++;
+            linha += "]";
+        }
+
+        return linha;
+    }
+    void arrive(KID c){//adiciona uma criança na lista de espera
+        this->kids_waiting.push_back(c);
+    }
+    void enter(KID c){//entra na lista de espera
+        if (kids_waiting.size() > 0) {//se tiver alguem na lista de espera
+            kids_waiting.pop_front();//remove o primeiro da lista
+            kids_playing.push_back(c);//adiciona o novo
+        }
+    }
+    void leave(KID c){//sai da lista de espera
+        if (kids_playing.size() > 0){//se tiver alguem na lista de jogando
+            kids_playing.pop_front();//remove o primeiro da lista
+            kids_waiting.push_back(c);//adiciona o novo
+        }
+    }
+    KID remove(string nome){//remove o kid com o nome passado
+        KID c = kids_playing.front();//pega o primeiro da lista jogando
+        kids_playing.pop_front();//remove o primeiro da lista
+        return c;
+    }        
+    };
 
 int main() {
-    vector<int> kids_waiting;
-    vector<int> kids_playing;
-    pula_pula pula_pula(kids_waiting, kids_playing);
-    pula_pula.add_kid(10);
+    pula_pula p;
+    p.init(5);//inicializa a lista de crianças com 5
+    KID c1("Carlos", 10);//cria um kid
+    KID c2("Emy", 12);//cria um kid
+    KID c3("Junior", 14);//cria um kid
+    KID c4("Joao", 16);//cria um kid
+    KID c5("Maria", 18);//cria um kid
 
+    p.arrive (c1);//adiciona o kid na lista de espera
+    p.arrive (c2);
+    p.arrive (c3);
+    p.arrive (c4);
+    p.arrive (c5);
+
+    p.enter(c1);//entra na lista de espera
+    p.enter(c2);
+    p.enter(c3);
+    p.enter(c4);
+    p.enter(c5);
+
+    p.leave(c1);//sai da lista de espera
+    p.leave(c2);
+    p.leave(c3);
+    p.leave(c4);
+    p.leave(c5);
+
+    cout << p.toString() << endl;//imprime a lista de crianças
+
+
+
+
+
+    return 0;
 }
