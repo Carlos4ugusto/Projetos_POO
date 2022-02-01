@@ -2,7 +2,6 @@
 #include <string>
 #include <sstream>
 #include <list>
-#include <map>
 
 using namespace std;
 
@@ -12,10 +11,12 @@ private:
     string fone;
 
 public:
-    Cliente(string id, string fone) {//construtor
-        this->id = id;
-        this->fone = fone;
+    Cliente(string id, string fone) {}//construtor da classe cliente com dois parametros
+    friend ostream& operator<<(ostream& os, const Cliente& c) {// sobrecarga do operador <<
+        os << "Cliente: " << c.id << " " << c.fone << endl;//imprime o id e o fone do cliente
+        return os;
     }
+
     string toString(){
         return "Cliente: " + id + " " + fone;//
     }
@@ -95,5 +96,4 @@ int main(){
             break;
         }
     }
-
     return 0;
