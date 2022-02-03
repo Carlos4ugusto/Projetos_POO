@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include <vector>
 
 using namespace std;
 
@@ -36,64 +37,75 @@ public:
 
 class Cinema {
     private:
-    list<Cliente> cadeiras;//lista de cadeiras
-    list<Cliente> getcadeiras(){
-        return cadeiras;
-    }
+    vector<Cliente> cadeiras;
     public:
     Cinema(int max_cadeiras){//construtor
         for(int i = 0; i < max_cadeiras; i++){
-            cadeiras.push_back(Cliente("", ""));//adiciona cadeiras
+            Cliente c("", "");
+            cadeiras.push_back(c);
         }
     }
-    bool reservar(string id, string fone, int cadeira){//reserva a cadeira
-        if(cadeira > cadeiras.size()){//se a cadeira for maior que o maximo
-            return false;
+    friend ostream& operator<<(ostream& os, const Cinema& c) {//sobrecarga do operador <<
+        os << "Cinema: " << endl;
+        for(int i = 0; i < c.cadeiras.size(); i++){
+            os << c.cadeiras[i];
         }
-    void cancelar(string id){//cancela a reserva
-        list<Cliente>::iterator it = cadeiras.begin();
+        return os;
+    }
+    void setCliente(string id, string fone){
         for(int i = 0; i < cadeiras.size(); i++){
-            if(it->getId() == id){
-                it->setId("");
-                it->setFone("");
+            if(cadeiras[i].getId() == ""){
+                cadeiras[i].setId(id);
+                cadeiras[i].setFone(fone);
+                break;
             }
-            it++;
         }
     }
-    string toString(){//retorna a lista de cadeiras
-        string linha = "=> ";
-        list<Cliente>::iterator it = cadeiras.begin();
+    void removeCliente(string id){
         for(int i = 0; i < cadeiras.size(); i++){
-            linha += it->toString() + " ";//concatena os nomes e idades
-            it++;
-            linha += "=> [ ";
+            if(cadeiras[i].getId() == id){
+                cadeiras[i].setId("");
+                cadeiras[i].setFone("");
+                break;
+            }
         }
-        return linha;
+    }
+    string getCliente(string id){
+        for(int i = 0; i < cadeiras.size(); i++){
+            if(cadeiras[i].getId() == id){
+                return cadeiras[i].toString();
+            }
+        }
+        return "";
     }
 };
 
 int main(){
     Cinema c(0);//cria um cinema com 0 cadeiras
     while(true){
-        string comando;
-        cin >> comando;
-        if(comando == "reservar"){
+        string line;
+        getline(cin, line);
+        stringstream ss(line);
+        string cmd;
+        ss >> cmd;
+        if(cmd == "add"){
             string id, fone;
-            int cadeira;
-            cin >> id >> fone >> cadeira;
-            if(c.reservar(id, fone, cadeira)){
-                cout << "Reserva realizada com sucesso" << endl;
-            }else{
-                cout << "Não foi possível realizar a reserva" << endl;
-            }
-        }else if(comando == "cancelar"){
+            ss >> id >> fone;
+            c.setCliente(id, fone);
+        }
+        else if(cmd == "remove"){
             string id;
-            cin >> id;
-            c.cancelar(id);
-        }else if(comando == "listar"){
-            cout << c.toString() << endl;
-        }else if(comando == "sair"){
+            ss >> id;
+            c.removeCliente(id);
+        }
+        else if(cmd == "get"){
+            string id;
+            ss >> id;
+            cout << c.getCliente(id) << endl;
+        }
+        else if(cmd == "end"){
             break;
         }
     }
     return 0;
+}
