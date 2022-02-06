@@ -19,7 +19,7 @@ class Account {
             this->clientId = clientId;
             this->type = type;
         }
-        virtual void monthlyUpdate() {
+        virtual void monthlyUpdate() {//método virtual pode ser sobreescrito em classes filhas 
             if (this->type == "CC") {
                 this->balance -= 20;
             } else {
@@ -48,7 +48,7 @@ class Account {
             }
         }
 
-        int getId() { return this->id; }
+        int getId() { return this->id; }//getters e setters para acessar os atributos da classe 
 
         float getBalance() { return this->balance; }
 
