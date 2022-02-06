@@ -61,21 +61,21 @@ class Account {
             return os;
         }
 
-    private:
+    private://nao pode ser acessado fora da classe
         int id;
         float balance;
         std::string clientId;
         std::string type;
 };
 
-class CheckingAccount : public Account {
+class CheckingAccount : public Account {//herda de Account e implementa o metodo monthlyUpdate
     public:
         CheckingAccount(int id, float balance, std::string clientId) : Account(id, balance, clientId, "CC") {}
 };
 
-class SavingAccount : public Account {
+class SavingAccount : public Account {//método construtor que recebe o id, o saldo e o id do cliente
     public:
-        SavingAccount(int id, float balance, std::string clientId) : Account(id, balance, clientId, "CP") {}
+        SavingAccount(int id, float balance, std::string clientId) : Account(id, balance, clientId, "CP") {}//inicializa o tipo como CP (conta poupança) e chama o construtor da classe pai (Account)
 };
 
 class Client {
@@ -94,7 +94,7 @@ class Client {
             return this->accounts;
         }
 
-        friend std::ostream& operator<<(std::ostream& os, Client& client) {
+        friend std::ostream& operator<<(std::ostream& os, Client& client) {//metodo sobrecarregado para imprimir cliente
             os << client.getId() << ":";
             for (std::list<Account*>::iterator it = client.accounts.begin(); it != client.accounts.end(); ++it) {
                 os << **it << ",";
@@ -104,22 +104,22 @@ class Client {
 
 
 
-    private:
+    private://lista de contas do cliente
         std::string id;
         std::list<Account*> accounts;
 };
 
 class BankAgency {
     public:
-        BankAgency() {
+        BankAgency() {//construtor da agencia que inicializa o mapa de clientes e contas
             this->clients = std::map<std::string, Client*>();
         }
 
-        void addClient(Client *client) {
+        void addClient(Client *client) {//metodo para adicionar cliente
             this->clients[client->getId()] = client;
         }
 
-        Client* getClient(std::string id) {
+        Client* getClient(std::string id) {//metodo para retornar cliente
             return this->clients[id];
         }
 
@@ -127,7 +127,7 @@ class BankAgency {
             return this->clients;
         }
 
-        friend std::ostream& operator<<(std::ostream& os, BankAgency& bankAgency) {
+        friend std::ostream& operator<<(std::ostream& os, BankAgency& bankAgency) {//metodo sobrecarregado para imprimir a agencia
             for (std::map<std::string, Client*>::iterator it = bankAgency.clients.begin(); it != bankAgency.clients.end(); ++it) {
                 os << *(it->second) << ",";
             }
@@ -142,25 +142,25 @@ class BankAgency {
 int main() {
     BankAgency bankAgency;
     std::string line;
-    while (std::getline(std::cin, line)) {
+    while (std::getline(std::cin, line)) {//leitura da entrada e armazenamento dos dados em uma string
         std::stringstream ss(line);
         std::string command;
         ss >> command;
-        if (command == "addClient") {
+        if (command == "addClient") {//comando para adicionar cliente
             std::string id;
             ss >> id;
             Client *client = new Client(id);
             bankAgency.addClient(client);
-        } else if (command == "addAccount") {
+        } else if (command == "addAccount") {//comando para adicionar conta
             std::string clientId;
             ss >> clientId;
-            Client *client = bankAgency.getClient(clientId);
+            Client *client = bankAgency.getClient(clientId);//busca do cliente na agencia para adicionar a conta
             if (client == NULL) {
                 std::cout << "cliente nao encontrado" << std::endl;
             } else {
                 std::string type;
                 ss >> type;
-                if (type == "CC") {
+                if (type == "CC") {//se o tipo for CC, adiciona uma conta corrente ao cliente e imprime o resultado da operacao
                     int id;
                     float balance;
                     ss >> id >> balance;
@@ -176,7 +176,7 @@ int main() {
                     std::cout << "tipo de conta nao encontrado" << std::endl;
                 }
             }
-        } else if (command == "monthlyUpdate") {
+        } else if (command == "monthlyUpdate") {//comando para atualizar as contas a cada mes (desconto de 20 reais para contas de credito e 1% para contas de poupanca)
             std::string clientId;
             ss >> clientId;
             Client *client = bankAgency.getClient(clientId);
