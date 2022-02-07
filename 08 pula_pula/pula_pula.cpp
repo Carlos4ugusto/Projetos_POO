@@ -88,36 +88,41 @@ class pula_pula {
 
 int main() {
     pula_pula p;
-    p.init(5);//inicializa a lista de crianças com 5
-    KID c1("Carlos", 10);//cria um kid
-    KID c2("Emy", 12);//cria um kid
-    KID c3("Junior", 14);//cria um kid
-    KID c4("Joao", 16);//cria um kid
-    KID c5("Maria", 18);//cria um kid
-
-    p.arrive (c1);//adiciona o kid na lista de espera
-    p.arrive (c2);
-    p.arrive (c3);
-    p.arrive (c4);
-    p.arrive (c5);
-
-    p.enter(c1);//entra na lista de espera
-    p.enter(c2);
-    p.enter(c3);
-    p.enter(c4);
-    p.enter(c5);
-
-    p.leave(c1);//sai da lista de espera
-    p.leave(c2);
-    p.leave(c3);
-    p.leave(c4);
-    p.leave(c5);
-
-    cout << p.toString() << endl;//imprime a lista de crianças
-
-
-
-
-
+    while(true) {//enquanto nao for digitado 0 sai do programa
+        string line;//string que recebe a entrada
+        getline(cin, line);
+        if (line == "") break;
+        istringstream iss(line);//converte a string para um stream de dados
+        string cmd;
+        iss >> cmd;//pega o primeiro comando da string
+        if (cmd == "init") {//se for init inicializa a lista de crianças
+            int max_kids;
+            iss >> max_kids;
+            p.init(max_kids);
+        } else if (cmd == "arrive") {//se for arrive adiciona uma criança na lista de espera
+            string nome;
+            int idade;
+            iss >> nome >> idade;
+            KID c(nome, idade);
+            p.arrive(c);
+        } else if (cmd == "enter") {//se for enter entra na lista de espera
+            string nome;
+            iss >> nome;
+            KID c(nome, 0);
+            p.enter(c);
+        } else if (cmd == "leave") {//se for leave sai da lista de espera
+            string nome;
+            iss >> nome;
+            KID c(nome, 0);
+            p.leave(c);
+        } else if (cmd == "remove") {//se for remove remove o kid com o nome passado
+            string nome;
+            iss >> nome;
+            KID c = p.remove(nome);
+            cout << c.getNome() << endl;
+        } else if (cmd == "print") {//se for print imprime a lista de crianças
+            cout << p.toString() << endl;
+        }
+    }
     return 0;
 }
