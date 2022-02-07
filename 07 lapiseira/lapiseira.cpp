@@ -95,10 +95,46 @@ struct lapiseira {
     };
 
     int main(){
-        grafite a {0.5, "HB", 10};
-        lapiseira b {0.5};
-        b.inserir_grafite(a);
-        b.escrever(5);
+        Lapiseira lapiseira {0.5};
 
+        while (true){
+            cout << "1 - Inserir grafite" << endl;
+            cout << "2 - Remover grafite" << endl;
+            cout << "3 - Escrever" << endl;
+            cout << "4 - Sair" << endl;
+            int opcao;
+            cin >> opcao;
+            switch (opcao){
+                case 1:
+                    cout << "Calibre: ";
+                    float calibre;
+                    cin >> calibre;
+                    cout << "Dureza: ";
+                    string dureza;
+                    cin >> dureza;
+                    cout << "Tamanho: ";
+                    int tamanho;
+                    cin >> tamanho;
+                    grafite g {calibre, dureza, tamanho};
+                    if(lapiseira.inserir_grafite(g)){
+                        cout << "Grafite inserido com sucesso" << endl;
+                    }
+                    break;
+                case 2:
+                    lapiseira.remover();
+                    cout << "Grafite removido com sucesso" << endl;
+                    break;
+                case 3:
+                    cout << "Folhas: ";
+                    int folhas;
+                    cin >> folhas;
+                    lapiseira.escrever(folhas);
+                    break;
+                case 4:
+                    return 0;
+                default:
+                    cout << "Opção inválida" << endl;
+            }
+        }
         return 0;
     }
